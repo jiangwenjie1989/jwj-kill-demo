@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.jwj.kill.task</groupId>
+	<artifactId>jwj-kill-task</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.RELEASE</version>
+
+	<name>task</name>
+	<description>定时器模块</description>
+	<url>http://maven.apache.org</url>
+
+	<parent>
+		<groupId>com.jwj.kill</groupId>
+		<artifactId>jwj-kill-parent</artifactId>
+		<version>1.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<project.outputDirectory>d:\chanting2wars</project.outputDirectory>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.jwj.kill.common</groupId>
+			<artifactId>jwj-kill-common</artifactId>
+			<version>1.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jwj.kill.domain</groupId>
+			<artifactId>jwj-kill-domain</artifactId>
+			<version>1.0.RELEASE</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>task</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-war</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<destFileName>${project.name}.${project.packaging}</destFileName>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>${project.artifactId}</artifactId>
+									<version>${project.version}</version>
+									<type>${project.packaging}</type>
+								</artifactItem>
+							</artifactItems>
+
+							<outputDirectory>${project.outputDirectory}</outputDirectory>
+							<!--<includes>
+								<include>*.war</include>
+							</includes>-->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
