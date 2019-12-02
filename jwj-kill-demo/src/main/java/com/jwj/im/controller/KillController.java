@@ -29,6 +29,38 @@ public class KillController {
     @Autowired
     private KillService killService;
 
+
+    /**
+     * 数据库乐观锁完成
+     * 如果测试该方法，需要将KillActivityGoods version字段添加注解@Version后才能测试看到效果，
+     * 其它接口测试将@Version注解去掉
+     * @param userId
+     * @param killActivityId
+     * @return
+     * @throws Exception
+     */
+    @CacheLock(prefix = "kill:robGoodsByOptimismLock:robGoods")
+    @ApiOperation(value = "秒杀商品-数据库乐观锁完成", httpMethod = "POST", tags = SwggerCommonTags.KILL_ACTIVITY_MODULE)
+    @RequestMapping(value = "/robGoodsByOptimismLock.do", method = RequestMethod.POST)
+    public SimpleResponse robGoodsByOptimismLock(
+            @CacheParam(name = "userId")
+            @ApiParam(required = false, name = "userId", value = "用户ID(必填)")
+            @RequestParam(defaultValue = "0") Long userId,
+
+            @ApiParam(required = false, name = "killActivityId", value = "秒杀活动id(必填)")
+            @RequestParam(defaultValue = "0") Long killActivityId) throws Exception {
+        SimpleResponse resp = new SimpleResponse();
+        //为了方便测试写死
+        killActivityId=1L;
+        userId= IdUtils.getId();
+        if ( userId == 0 || killActivityId==0 ) {
+            return resp.setReturnErrMsg(resp, HttpCodeE.参数有误.value, SysRespStatusE.失败.getDesc(), "参数有误！");
+        }
+        return killService.robGoodsByOptimismLock(userId, killActivityId);
+    }
+
+
+
     /**
      * 通过aop利用redis分布式锁完成   锁的过期时间为1秒  拦截器类名称：LockMethodInterceptor
      * 该接口立刻响应结果，业务场景用户如果没抢到可以一直点击，直到商品库存数量为0

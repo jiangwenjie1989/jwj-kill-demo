@@ -49,6 +49,29 @@ public class KillServiceImpl implements KillService {
     @Autowired
     private RedisStringCacheSupport redisString;
 
+    @Override
+    @Transactional
+    public SimpleResponse robGoodsByOptimismLock(Long userId, Long killActivityId) {
+        SimpleResponse resp = new SimpleResponse();
+        KillActivityGoods killActivityGoods=killActivityGoodsDao.findById(killActivityId);
+        if (killActivityGoods == null) {
+            return resp.setReturnErrMsg(resp, HttpCodeE.数据验证不通过.value, SysRespStatusE.失败.getDesc(), "该秒杀活动不存在！");
+        }
+        Optional<KillOrder> opt=killOrderDao.findByUserId(userId);
+        if(opt.isPresent()){
+            return resp.setReturnErrMsg(resp, HttpCodeE.数据验证不通过.value, SysRespStatusE.失败.getDesc(), "您已经抢到该商品！");
+        }
+        Integer goodsNum = killActivityGoods.getGoodsNum();
+        if(goodsNum>0){
+            saveOrderAndUpdateNum(userId, killActivityId, killActivityGoods);
+        }else {
+            killActivityGoods.setGoodsNum(0);
+            killActivityGoodsDao.save(killActivityGoods);
+            return resp.setReturnErrMsg(resp, HttpCodeE.数据验证不通过.value, SysRespStatusE.失败.getDesc(), "该商品已经抢完！");
+        }
+        return resp;
+    }
+
 
     @Override
     @Transactional
@@ -149,7 +172,6 @@ public class KillServiceImpl implements KillService {
             return resp.setReturnErrMsg(resp, HttpCodeE.数据验证不通过.value, SysRespStatusE.失败.getDesc(), "人数过多，请再次尝试！");
         }
     }
-
 
 
 

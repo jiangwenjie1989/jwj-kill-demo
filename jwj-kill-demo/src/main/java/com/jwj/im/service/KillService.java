@@ -11,4 +11,5 @@ public interface KillService {
 
     SimpleResponse robGoodsByRedisPush(Long userId, Long killActivityId);
 
+    SimpleResponse robGoodsByOptimismLock(Long userId, Long killActivityId);
 }
