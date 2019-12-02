@@ -17,6 +17,8 @@ create table kill_activity_goods
 
 alter table kill_activity_goods comment '活动商品表';
 
+INSERT INTO `kill_activity_goods` VALUES ('1', '苹果XR', '0', '2019-11-28 14:06:25', '0');
+
 
 drop table if exists kill_order;
 
