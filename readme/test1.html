@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<h3>当前在线人数:</h3>
+<div id="people"></div>
+<div id="msg"></div>
+<input type="text" id="text">
+<input type="submit" value="send" onclick="send()">
+</body>
+<script>
+	 var socket;
+    if (typeof (WebSocket) == "undefined") {
+        console.log("很遗憾：您的浏览器不支持WebSocket");
+    } else {
+        console.log("恭喜您：您的浏览器支持WebSocket");
+
+        //实现化WebSocket对象
+        //指定要连接的服务器地址与端口建立连接
+        socket = new WebSocket("ws://127.0.0.1/ws/api?userId=1");
+        //连接打开事件
+        socket.onopen = function() {
+            console.log("Socket 已打开");
+            //socket.send("消息发送测试(From Client)");
+        };
+        //收到消息事件
+        socket.onmessage = function(msg) {
+			//console.log(msg.data);
+			var message = JSON.parse(msg.data);
+            console.log(message.text);
+        };
+        //连接关闭事件
+        socket.onclose = function() {
+            console.log("Socket已关闭");
+        };
+        //发生了错误事件
+        socket.onerror = function() {
+            alert("Socket发生了错误");
+        }
+        //窗口关闭时，关闭连接
+        window.unload=function() {
+            socket.close();
+        };
+    }
+</script>
+</html>
