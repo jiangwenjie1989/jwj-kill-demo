@@ -17,7 +17,7 @@ import com.jwj.im.syse.SysRespStatusE;
  * @author 61959
  *
  */
-@ControllerAdvice(basePackages = {"com.virtual.wallet.ptop.controller"})
+@ControllerAdvice(basePackages = {"com.jwj.im.controller"})
 @ResponseBody
 public class GlobalExceptionHandler {
 
@@ -37,8 +37,8 @@ public class GlobalExceptionHandler {
 				simpleResponse.setStatus(SysRespStatusE.失败.getDesc());
 				simpleResponse.setCode(businessException.getCode());
 				simpleResponse.setMessage(businessException.getMsg());
-				logger.error("业务异常："+"错误码："+businessException.getCode() + "，错误消息：" + businessException.getMsg());
-				logger.error("业务异常：", e);
+//				logger.error("业务异常："+"错误码："+businessException.getCode() + "，错误消息：" + businessException.getMsg());
+//				logger.error("业务异常：", e);
 			}
 			return simpleResponse;  
 		}
