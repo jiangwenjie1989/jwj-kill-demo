@@ -79,10 +79,10 @@ public class KillController {
 
             @CacheParam(name = "killActivityId")
             @ApiParam(required = false, name = "killActivityId", value = "秒杀活动id(必填)")
-            @RequestParam(defaultValue = "0") Long killActivityId) throws Exception {
+            @RequestParam(defaultValue = "1") Long killActivityId) throws Exception {
         SimpleResponse resp = new SimpleResponse();
         //为了方便测试写死
-        killActivityId=1L;
+        //killActivityId=1L;
         userId= IdUtils.getId();
         if ( userId == 0 || killActivityId==0 ) {
             return resp.setReturnErrMsg(resp, HttpCodeE.参数有误.value, SysRespStatusE.失败.getDesc(), "参数有误！");
