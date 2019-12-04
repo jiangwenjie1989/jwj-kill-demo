@@ -3,6 +3,7 @@ package com.jwj.im.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.jwj.domain.KillActivityGoods;
 import com.jwj.domain.KillOrder;
+import com.jwj.im.aop.CostTimeLogger;
 import com.jwj.im.common.Message;
 import com.jwj.im.common.RedisCacheKeys;
 import com.jwj.im.common.RedisMassgae;
@@ -49,6 +50,7 @@ public class KillServiceImpl implements KillService {
     @Autowired
     private RedisStringCacheSupport redisString;
 
+    @CostTimeLogger(LEVEL = CostTimeLogger.Level.INFO,LANGUAGE=CostTimeLogger.Language.CN)
     @Override
     @Transactional
     public SimpleResponse robGoodsByOptimismLock(Long userId, Long killActivityId) {
@@ -72,7 +74,7 @@ public class KillServiceImpl implements KillService {
         return resp;
     }
 
-
+    @CostTimeLogger(LEVEL = CostTimeLogger.Level.INFO,LANGUAGE=CostTimeLogger.Language.CN)
     @Override
     @Transactional
     public SimpleResponse robGoodsByAopLock(Long userId, Long killActivityId) {
@@ -134,6 +136,7 @@ public class KillServiceImpl implements KillService {
         return resp;
     }
 
+    @CostTimeLogger(LEVEL = CostTimeLogger.Level.INFO,LANGUAGE=CostTimeLogger.Language.CN)
     @Override
     public SimpleResponse robGoodsByRedisPush(Long userId, Long killActivityId) {
         SimpleResponse resp = new SimpleResponse();
